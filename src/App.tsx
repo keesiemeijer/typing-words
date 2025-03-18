@@ -114,7 +114,9 @@ function App() {
             </div>
             <form className="app-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="chars">Characters</label>
+                    <label htmlFor="chars" className="form-label">
+                        Characters
+                    </label>
                     <input
                         ref={charsInput}
                         id="chars"
@@ -134,7 +136,9 @@ function App() {
                     </small>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="words">Words to generate</label>
+                    <label htmlFor="words" className="form-label">
+                        Words to generate
+                    </label>
                     <input
                         ref={wordsToGenerateInput}
                         id="wordsToGenerate"
@@ -152,7 +156,9 @@ function App() {
                     </small>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="wordLength">Word Length</label>
+                    <label htmlFor="wordLength" className="form-label">
+                        Word Length
+                    </label>
                     <input
                         ref={wordLengthInput}
                         id="wordLength"
@@ -189,7 +195,9 @@ function App() {
                     </small>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="wordLength">Columns</label>
+                    <label htmlFor="wordLength" className="form-label">
+                        Columns
+                    </label>
                     <input
                         ref={sentenceLengthInput}
                         id="columns"
