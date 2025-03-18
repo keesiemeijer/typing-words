@@ -110,7 +110,7 @@ function App() {
         <div className="app">
             <div className="header">
                 <h1>Generate Typing Practice Words</h1>
-                <p>Generate a list of words with carachters you provide</p>
+                <p>Generate a list of practice words with the charachters you provide</p>
             </div>
             <form className="app-form" onSubmit={handleSubmit}>
                 <div className="form-group">
