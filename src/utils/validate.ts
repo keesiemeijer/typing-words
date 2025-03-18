@@ -6,7 +6,7 @@ export const isObject = (item: any) => {
 
 export const sanitizeSettings = (settings: FormSettings): FormSettings => {
     const validKeys = Object.keys(defaultSettings);
-    // Removes all properties not in  DateListItemDefault
+    // Removes all properties not in FormSettings
     Object.keys(settings).forEach((key) => validKeys.includes(key) || delete settings[key as keyof FormSettings]);
 
     return settings;
@@ -43,12 +43,7 @@ export const isValidSettingsObject = (settings: FormSettings): boolean => {
         const typeValue = settings[key as keyof FormSettings];
 
         if (strings.indexOf(key) > -1) {
-            if (typeof typeValue === "string") {
-                if ("chars" === key && typeValue.trim().length < 2) {
-                    console.log(typeValue + " - Not enough chars");
-                    return false;
-                }
-            } else {
+            if (typeof typeValue !== "string") {
                 console.log(key + " - not a string");
                 return false;
             }
@@ -62,16 +57,7 @@ export const isValidSettingsObject = (settings: FormSettings): boolean => {
         }
 
         if (numbers.indexOf(key) > -1) {
-            if (typeof typeValue === "number") {
-                if ("words" === key && typeValue < 1) {
-                    console.log(key + " - Not enough words");
-                    return false;
-                }
-                if ("wordLength" === key && typeValue < 2) {
-                    console.log(key + " - Not enough caracters");
-                    return false;
-                }
-            } else {
+            if (typeof typeValue !== "number") {
                 console.log(key + " - Not a number");
                 return false;
             }
@@ -80,8 +66,10 @@ export const isValidSettingsObject = (settings: FormSettings): boolean => {
     });
 
     if (isValid) {
+        // Types are valid, check limits
         return isValidLimits(settings);
     }
+
     return false;
 };
 

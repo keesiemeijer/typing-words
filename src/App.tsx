@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-import { getWords, convertWordsToString } from "./utils/utils";
+import { getWords, convertWordsToString, getLimitText } from "./utils/utils";
 import { isValidSettingsObject } from "./utils/validate";
 
 export interface FormSettings {
@@ -19,9 +19,15 @@ export interface FormSettings {
 export const defaultSettings: FormSettings = {
     chars: "",
     wordsToGenerate: 50,
-    wordLength: 5,
+    wordLength: 7,
     columns: 5,
     randomWordLength: false,
+};
+
+export const pluralNouns: { [key: string]: string } = {
+    word: "words",
+    column: "columns",
+    character: "characters",
 };
 
 export interface Limits {
@@ -29,10 +35,10 @@ export interface Limits {
 }
 
 export const defaultLimits: Limits = {
-    chars: { min: 2, max: 100 },
+    chars: { min: 1, max: 100 },
     wordsToGenerate: { min: 1, max: 1000 },
-    wordLength: { min: 2, max: 30 },
-    columns: { min: 1, max: 15 },
+    wordLength: { min: 1, max: 30 },
+    columns: { min: 0, max: 15 },
 };
 
 function App() {
@@ -47,7 +53,7 @@ function App() {
     const sentenceLengthInput = useRef<HTMLInputElement>(null);
     const results = useRef<HTMLDivElement>(null);
 
-    // Hook for when list item count changes
+    // Hook for when word string changes
     useEffect(() => {
         if (words.length && results.current) {
             results.current.scrollIntoView();
@@ -130,7 +136,8 @@ function App() {
                         required={true}
                     />
                     <small id="titleHelp" className="form-text text-muted">
-                        Characters to create random words from (minimum {defaultLimits.chars.min} charachters, maximum {defaultLimits.chars.max} characters)
+                        Characters to create random words from (minimum {getLimitText(defaultLimits.chars.min, "character")}, maximum{" "}
+                        {getLimitText(defaultLimits.chars.max, "character")}).
                         <br />
                         Duplicate characters are allowed.
                     </small>
@@ -152,7 +159,8 @@ function App() {
                         required={true}
                     />
                     <small id="word-lengthHelp" className="form-text text-muted">
-                        Words to generate (minimum {defaultLimits.wordsToGenerate.min} word, maximum {defaultLimits.wordsToGenerate.max} words)
+                        Words to generate (minimum {getLimitText(defaultLimits.wordsToGenerate.min, "word")}, maximum{" "}
+                        {getLimitText(defaultLimits.wordsToGenerate.max, "word")}).
                     </small>
                 </div>
                 <div className="form-group">
@@ -172,7 +180,8 @@ function App() {
                         required={true}
                     />
                     <small id="wordLengthHelp" className="form-text text-muted">
-                        Maximum characters in a word (minimum {defaultLimits.wordLength.min} characters, maximum {defaultLimits.wordLength.max} characters)
+                        Maximum characters in a word (minimum {getLimitText(defaultLimits.wordLength.min, "character")}, maximum{" "}
+                        {getLimitText(defaultLimits.wordLength.max, "character")}).
                     </small>
                 </div>
                 <div className="form-group">
@@ -187,11 +196,11 @@ function App() {
                             aria-describedby="randomWordLengthHelp"
                         />
                         <label htmlFor="randomWordLength" className="form-check-label">
-                            Create words with random length
+                            Create words with random length.
                         </label>
                     </div>
                     <small id="randomWordLengthHelp" className="form-text text-muted">
-                        Uses word length set above for longest word length
+                        Uses word length set above for longest word length.
                     </small>
                 </div>
                 <div className="form-group">
@@ -211,7 +220,12 @@ function App() {
                         required={true}
                     />
                     <small id="wordLengthHelp" className="form-text text-muted">
-                        Maximum colums for the word list (minimum {defaultLimits.columns.min} column, maximum {defaultLimits.columns.max} columns)
+                        Word list columns (minimum {getLimitText(defaultLimits.columns.min, "column")}, maximum{" "}
+                        {getLimitText(defaultLimits.columns.max, "column")}).
+                        <br />
+                        Colums are words seperated by spaces with line breaks after the column length.
+                        <br />
+                        Zero columns are words seperated by spaces without line breaks.
                     </small>
                 </div>
                 <div className="form-group">
@@ -229,7 +243,8 @@ function App() {
                         Duplicate words: {words.length - new Set(words).size}
                     </p>
                 )}
-                {words.length > 0 && <pre>{convertWordsToString(words, settings.columns)}</pre>}
+                {words.length > 0 && settings.columns > 0 && <pre>{convertWordsToString(words, settings.columns)}</pre>}
+                {words.length > 0 && settings.columns === 0 && <p>{convertWordsToString(words, settings.columns)}</p>}
             </div>
             <ToastContainer />
         </div>

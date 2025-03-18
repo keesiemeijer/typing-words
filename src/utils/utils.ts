@@ -1,12 +1,21 @@
-import { FormSettings, defaultLimits } from "../App";
+import { FormSettings, defaultLimits, pluralNouns } from "../App";
 import { isValidSettingsObject } from "./validate";
+
+export const getLimitText = (limit: number, noun: string) => {
+    if (1 !== limit && pluralNouns.hasOwnProperty(noun)) {
+        noun = pluralNouns[noun];
+    }
+
+    return limit + " " + noun;
+};
 
 export const getWords = (settings: FormSettings): string[] => {
     if (!isValidSettingsObject(settings)) {
         return [];
     }
 
-    const randomString = generateStringFromCharacters(settings.chars, 1000);
+    // Creates a long random string
+    const randomString = generateStringFromCharacters(settings.chars, 500);
 
     let words: string[] = [];
     let wordLength = settings.wordLength;
@@ -28,7 +37,11 @@ export const convertWordsToString = (words: string[], columns: number = 5): stri
     for (let index = 0; index < words.length; index++) {
         if (typeof words[index] === "string") {
             wordListString += words[index];
-            wordListString += (index + 1) % columns === 0 ? "\n" : " ";
+            if (columns > 0) {
+                wordListString += (index + 1) % columns === 0 ? "\n" : " ";
+            } else {
+                wordListString += " ";
+            }
         }
     }
     return wordListString;
