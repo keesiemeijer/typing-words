@@ -10,9 +10,13 @@
     width: 100%;
     max-width: 60ch;
 }
+
 .header {
     margin-bottom: 1.5rem;
+    position: relative;
+    margin-top: 2rem;
 }
+
 .wordlist {
     margin-top: 1rem;
     padding-top: 1rem;
@@ -23,18 +27,21 @@
     padding-bottom: 1rem;
 }
 
-#table {
-    display: table;
-    padding: 5px;
+h1 {
+    line-height: 1.1;
 }
-.tr {
-    display: table-row;
-    padding: 5px;
+
+.header p {
+    margin-top: 1rem;
 }
-.td {
-    display: table-cell;
-    padding: 5px;
-    width: 150px;
-    border: #000000 solid 1px;
-    margin: 5px;
+
+.header .typing-words {
+    font-size: 8vw; /* Browsers that do not support "MIN () - MAX ()" and "Clamp ()" functions will take this value.*/
+    font-size: max(3rem, min(8vw, 6rem)); /* Browsers that do not support the "clamp ()" function will take this value. */
+    font-size: clamp(3rem, 8vw, 6rem);
+}
+
+.those-are {
+    font-size: 1.8rem;
+    display: block;
 }

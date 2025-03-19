@@ -24,12 +24,6 @@ export const defaultSettings: FormSettings = {
     randomWordLength: false,
 };
 
-export const pluralNouns: { [key: string]: string } = {
-    word: "words",
-    column: "columns",
-    character: "characters",
-};
-
 export interface Limits {
     [key: string]: { min: number; max: number };
 }
@@ -39,6 +33,12 @@ export const defaultLimits: Limits = {
     wordsToGenerate: { min: 1, max: 1000 },
     wordLength: { min: 1, max: 30 },
     columns: { min: 0, max: 15 },
+};
+
+export const pluralNouns: { [key: string]: string } = {
+    word: "words",
+    column: "columns",
+    character: "characters",
 };
 
 function App() {
@@ -104,9 +104,10 @@ function App() {
         const formSettings: FormSettings = { ...settings, ...newSettings };
 
         if (isValidSettingsObject(formSettings)) {
+            const wordsGenerated = getWords(formSettings);
             setSettings(formSettings);
-            setWords(getWords(formSettings));
-            toast.info("Words Generated");
+            setWords(wordsGenerated);
+            toast.info(wordsGenerated.length + " Words Generated");
         } else {
             toast.error("No words generated. Invalid Settings");
         }
@@ -115,7 +116,10 @@ function App() {
     return (
         <div className="app">
             <div className="header">
-                <h1>Generate Typing Practice Words</h1>
+                <h1>
+                    <span className="those-are">Those are </span>
+                    <span className="typing-words">Typing Words</span>
+                </h1>
                 <p>Generate a list of practice words with the charachters you provide</p>
             </div>
             <form className="app-form" onSubmit={handleSubmit}>
