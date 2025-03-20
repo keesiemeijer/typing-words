@@ -18,7 +18,7 @@ export interface FormSettings {
 
 export const defaultSettings: FormSettings = {
     chars: "",
-    wordsToGenerate: 50,
+    wordsToGenerate: 30,
     wordLength: 7,
     columns: 5,
     randomWordLength: false,
