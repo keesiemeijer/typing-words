@@ -29,7 +29,7 @@ export interface Limits {
 }
 
 export const defaultLimits: Limits = {
-    chars: { min: 1, max: 100 },
+    chars: { min: 1, max: 500 },
     wordsToGenerate: { min: 1, max: 1000 },
     wordLength: { min: 1, max: 30 },
     columns: { min: 0, max: 15 },

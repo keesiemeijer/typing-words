@@ -14,8 +14,8 @@ export const getWords = (settings: FormSettings): string[] => {
         return [];
     }
 
-    // Creates a long random string
-    const randomString = generateStringFromCharacters(settings.chars, 500);
+    // Creates a long random string from characters
+    const randomString = generateStringFromCharacters(settings.chars, 750);
 
     let words: string[] = [];
     let wordLength = settings.wordLength;
