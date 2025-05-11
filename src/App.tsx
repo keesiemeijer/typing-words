@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 import { getWords, convertWordsToString, getLimitText } from "./utils/utils";
+import MyCopyButton from "./copy-button";
+
 import { isValidSettingsObject } from "./utils/validate";
 
 export interface FormSettings {
@@ -53,12 +55,15 @@ function App() {
     const sentenceLengthInput = useRef<HTMLInputElement>(null);
     const results = useRef<HTMLDivElement>(null);
 
-    // Hook for when word string changes
+    // Formatted string of practice words
+    const formattedWords = useRef("");
+
+    // Hook for when formatted word string changes
     useEffect(() => {
         if (words.length && results.current) {
             results.current.scrollIntoView();
         }
-    }, [convertWordsToString(words)]);
+    }, [formattedWords.current]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -107,6 +112,8 @@ function App() {
             const wordsGenerated = getWords(formSettings);
             setSettings(formSettings);
             setWords(wordsGenerated);
+            formattedWords.current = convertWordsToString(wordsGenerated, formSettings.columns);
+
             toast.info(wordsGenerated.length + " Words Generated");
         } else {
             toast.error("No words generated. Invalid Settings");
@@ -236,6 +243,7 @@ function App() {
                     <button type="submit" className="btn btn-primary">
                         Generate Words
                     </button>
+                    {words.length > 0 && <MyCopyButton text={formattedWords.current} />}
                 </div>
             </form>
 
@@ -247,8 +255,8 @@ function App() {
                         Duplicate words: {words.length - new Set(words).size}
                     </p>
                 )}
-                {words.length > 0 && settings.columns > 0 && <pre>{convertWordsToString(words, settings.columns)}</pre>}
-                {words.length > 0 && settings.columns === 0 && <p>{convertWordsToString(words, settings.columns)}</p>}
+                {words.length > 0 && settings.columns > 0 && <pre>{formattedWords.current}</pre>}
+                {words.length > 0 && settings.columns === 0 && <p>{formattedWords.current}</p>}
             </div>
             <ToastContainer />
         </div>
